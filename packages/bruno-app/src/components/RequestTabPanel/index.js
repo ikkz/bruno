@@ -18,6 +18,7 @@ import NetworkError from 'components/ResponsePane/NetworkError';
 import RunnerResults from 'components/RunnerResults';
 import VariablesEditor from 'components/VariablesEditor';
 import CollectionSettings from 'components/CollectionSettings';
+import Git from 'components/Git';
 import { DocExplorer } from '@usebruno/graphql-docs';
 
 import StyledWrapper from './StyledWrapper';
@@ -118,7 +119,7 @@ const RequestTabPanel = () => {
         if (newHeight < MIN_TOP_PANE_HEIGHT || newHeight > mainRect.height - MIN_BOTTOM_PANE_HEIGHT) {
           return;
         }
-        
+
         setTopPaneHeight(newHeight);
       } else {
         const newWidth = e.clientX - mainRect.left - dragOffset.current.x;
@@ -215,6 +216,10 @@ const RequestTabPanel = () => {
     return <SecuritySettings collection={collection} />;
   }
 
+  if (focusedTab.type === 'git') {
+    return <Git collection={collection} />;
+  }
+
   if (!item || !item.uid) {
     return <RequestNotFound itemUid={activeTabUid} />;
   }
@@ -249,7 +254,11 @@ const RequestTabPanel = () => {
   };
 
   return (
-    <StyledWrapper className={`flex flex-col flex-grow relative ${dragging ? 'dragging' : ''} ${isVerticalLayout ? 'vertical-layout' : ''}`}>
+    <StyledWrapper
+      className={`flex flex-col flex-grow relative ${dragging ? 'dragging' : ''} ${
+        isVerticalLayout ? 'vertical-layout' : ''
+      }`}
+    >
       <div className="pt-4 pb-3 px-4">
         {isGrpcRequest ? (
           <GrpcQueryUrl item={item} collection={collection} handleRun={handleRun} />
@@ -257,17 +266,24 @@ const RequestTabPanel = () => {
           <QueryUrl item={item} collection={collection} handleRun={handleRun} />
         )}
       </div>
-      <section ref={mainSectionRef} className={`main flex ${isVerticalLayout ? 'flex-col' : ''} flex-grow pb-4 relative overflow-auto`}>
+      <section
+        ref={mainSectionRef}
+        className={`main flex ${isVerticalLayout ? 'flex-col' : ''} flex-grow pb-4 relative overflow-auto`}
+      >
         <section className="request-pane">
           <div
             className="px-4 h-full"
-            style={isVerticalLayout ? {
-              height: `${Math.max(topPaneHeight, MIN_TOP_PANE_HEIGHT)}px`,
-              minHeight: `${MIN_TOP_PANE_HEIGHT}px`,
-              width: '100%'
-            } : {
-              width: `${Math.max(leftPaneWidth, MIN_LEFT_PANE_WIDTH)}px`
-            }}
+            style={
+              isVerticalLayout
+                ? {
+                    height: `${Math.max(topPaneHeight, MIN_TOP_PANE_HEIGHT)}px`,
+                    minHeight: `${MIN_TOP_PANE_HEIGHT}px`,
+                    width: '100%'
+                  }
+                : {
+                    width: `${Math.max(leftPaneWidth, MIN_LEFT_PANE_WIDTH)}px`
+                  }
+            }
           >
             {item.type === 'graphql-request' ? (
               <GraphQLRequestPane
@@ -279,13 +295,9 @@ const RequestTabPanel = () => {
               />
             ) : null}
 
-            {item.type === 'http-request' ? (
-              <HttpRequestPane item={item} collection={collection} />
-            ) : null}
+            {item.type === 'http-request' ? <HttpRequestPane item={item} collection={collection} /> : null}
 
-            {isGrpcRequest ? (
-              <GrpcRequestPane item={item} collection={collection} handleRun={handleRun} />
-            ) : null}
+            {isGrpcRequest ? <GrpcRequestPane item={item} collection={collection} handleRun={handleRun} /> : null}
           </div>
         </section>
 
@@ -295,18 +307,9 @@ const RequestTabPanel = () => {
 
         <section className="response-pane flex-grow overflow-x-auto">
           {item.type === 'grpc-request' ? (
-            <GrpcResponsePane
-              item={item}
-              collection={collection}
-             
-              response={item.response}
-            />
+            <GrpcResponsePane item={item} collection={collection} response={item.response} />
           ) : (
-            <ResponsePane
-              item={item}
-              collection={collection}
-              response={item.response}
-            />
+            <ResponsePane item={item} collection={collection} response={item.response} />
           )}
         </section>
       </section>

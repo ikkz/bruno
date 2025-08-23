@@ -9,6 +9,7 @@ const config = {
     output: 'out'
   },
   files: ['**/*'],
+  asar: false,
   afterSign: 'notarize.js',
   mac: {
     artifactName: '${name}_${version}_${arch}_${os}.${ext}',

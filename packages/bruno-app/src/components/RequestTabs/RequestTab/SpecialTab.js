@@ -1,6 +1,6 @@
 import React from 'react';
 import CloseTabIcon from './CloseTabIcon';
-import { IconVariable, IconSettings, IconRun, IconFolder, IconShieldLock } from '@tabler/icons';
+import { IconVariable, IconSettings, IconRun, IconFolder, IconShieldLock, IconGitMerge } from '@tabler/icons';
 
 const SpecialTab = ({ handleCloseClick, type, tabName, handleDoubleClick }) => {
   const getTabInfo = (type, tabName) => {
@@ -27,7 +27,7 @@ const SpecialTab = ({ handleCloseClick, type, tabName, handleDoubleClick }) => {
             <IconShieldLock size={18} strokeWidth={1.5} className="text-yellow-600" />
             <span className="ml-1">Security</span>
           </>
-        )
+        );
       }
       case 'folder-settings': {
         return (
@@ -51,6 +51,14 @@ const SpecialTab = ({ handleCloseClick, type, tabName, handleDoubleClick }) => {
             <IconRun size={18} strokeWidth={1.5} className="text-yellow-600" />
             <span className="ml-1 leading-6">Runner</span>
           </>
+        );
+      }
+      case 'git': {
+        return (
+          <div onDoubleClick={handleDoubleClick} className="flex items-center flex-nowrap overflow-hidden">
+            <IconGitMerge size={18} strokeWidth={1.5} className="text-yellow-600" />
+            <span className="ml-1 leading-6">Git</span>
+          </div>
         );
       }
     }

@@ -1,0 +1,9 @@
+{
+  "name": "bruno-git",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "activationEvents": ["*"],
+  "main": "./index.js"
+}

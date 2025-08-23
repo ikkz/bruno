@@ -3,7 +3,7 @@ import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginBabel } from '@rsbuild/plugin-babel';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginSass } from '@rsbuild/plugin-sass';
-import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill'
+import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
 
 export default defineConfig({
   plugins: [
@@ -20,11 +20,7 @@ export default defineConfig({
   ],
   source: {
     tsconfigPath: './jsconfig.json', // Specifies the path to the JavaScript/TypeScript configuration file,
-    exclude: [
-      '**/test-utils/**',
-      '**/*.test.*',
-      '**/*.spec.*'
-    ]
+    exclude: ['**/test-utils/**', '**/*.test.*', '**/*.spec.*']
   },
   html: {
     title: 'Bruno'
@@ -35,20 +31,28 @@ export default defineConfig({
         parser: {
           javascript: {
             // This loads the JavaScript contents from a library along with the main JavaScript bundle.
-            dynamicImportMode: "eager",
-          },
+            dynamicImportMode: 'eager'
+          }
         },
+        rules: [
+          {
+            type: 'asset/source',
+            resourceQuery: /raw/
+          }
+        ]
       },
       ignoreWarnings: [
-        (warning) =>  warning.message.includes('Critical dependency: the request of a dependency is an expression') && warning?.moduleDescriptor?.name?.includes('flow-parser')
+        (warning) =>
+          warning.message.includes('Critical dependency: the request of a dependency is an expression') &&
+          warning?.moduleDescriptor?.name?.includes('flow-parser')
       ],
       // Add externals configuration to exclude Node.js libraries
       externals: {
         // List specific Node.js modules you want to exclude
         // Format: 'module-name': 'commonjs module-name'
-        'worker_threads': 'commonjs worker_threads',
+        worker_threads: 'commonjs worker_threads'
         // 'path': 'commonjs path'
       }
-    },
+    }
   }
 });
